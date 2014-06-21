@@ -1,0 +1,6 @@
+*.o
+libCPP-MIDI.so
+example
+.*.sw*
+*~
+
