@@ -10,6 +10,7 @@
 
 CPP=g++
 CFLAGS=-ggdb -std=c++11 -Wall -Wextra -pedantic
+MIDI := $(patsubst %.cpp,%.o,$(wildcard Midi*.cpp))
 
 .PHONY: clean
 
@@ -18,7 +19,7 @@ all: libCPP-MIDI.a
 %.o: %.cpp
 	$(CPP) $(CFLAGS) $< -c -o $@
 
-libCPP-MIDI.a: MidiFile.o
+libCPP-MIDI.a: $(MIDI)
 	ar rcs $@ $^
 
 test: test.cpp libCPP-MIDI.a
@@ -26,3 +27,4 @@ test: test.cpp libCPP-MIDI.a
 
 clean:
 	rm -rf *.o *.a
+

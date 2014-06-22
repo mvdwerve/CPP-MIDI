@@ -8,7 +8,7 @@ public:
     const static int IDENTIFIER = 0x4D546864;
 
     MidiHeader() {}
-}
+};
 }
 
 #endif
