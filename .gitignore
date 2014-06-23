@@ -3,4 +3,5 @@ libCPP-MIDI.so
 example
 .*.sw*
 *~
+*.a
 
