@@ -11,16 +11,20 @@
 #define MIDIFILE_h
 
 #include <vector>
+#include <string>
 #include "MidiHeader.h"
 #include "MidiTrack.h"
 
 namespace Midi {
-class MidiFile {
+class File {
 public:
-    MidiFile() {}
+    File() {}
+    File(std::string name);
+
 private:
-    MidiHeader _head;
-    std::vector<MidiTrack> _tracks;
+    std::string _name;
+    Header _head;
+    std::vector<Track> _tracks;
 };
 }
 
