@@ -1,5 +1,8 @@
 #include "MidiFile.h"
 
+using Midi::File;
+
 int main(int argc, char* argv[]) {
-    Midi::File midi = Midi::File();
+    File midi("test.mid");
+    midi.write();
 }

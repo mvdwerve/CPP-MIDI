@@ -12,20 +12,34 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 #include "MidiHeader.h"
 #include "MidiTrack.h"
 
 namespace Midi {
-class File {
-public:
-    File() {}
-    File(std::string name);
+    class File {
+        public:
+            File() {}
+            File(const std::string name);
 
-private:
-    std::string _name;
-    Header _head;
-    std::vector<Track> _tracks;
-};
+            bool addTrack(const Track t) {
+                if (!_head.setNumTracks(_head.getNumTracks() + 1))
+                    return false;
+
+                _tracks.push_back(t);
+                return true;
+            }
+
+            void write() {
+                _file << this;
+            }
+
+            friend std::ostream& operator <<(std::ostream& output, const File f);
+        private:
+            std::fstream _file;
+            Header _head;
+            std::vector<Track> _tracks;
+    };
 }
 
 #endif

@@ -23,7 +23,7 @@ libCPP-MIDI.a: $(MIDI)
 	ar rcs $@ $^
 
 test: test.cpp libCPP-MIDI.a
-	$(CPP) $< -lCPP-MIDI $(CFLAGS) -o $@
+	$(CPP) $< -L. -lCPP-MIDI $(CFLAGS) -o $@
 
 clean:
 	rm -rf *.o *.a
