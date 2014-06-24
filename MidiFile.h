@@ -22,6 +22,8 @@ namespace Midi {
             File() {}
             File(const std::string name);
 
+            virtual ~File();
+
             bool addTrack(const Track t) {
                 if (!_head.setNumTracks(_head.getNumTracks() + 1))
                     return false;
@@ -31,10 +33,10 @@ namespace Midi {
             }
 
             void write() {
-                _file << this;
+                _file << *this;
             }
 
-            friend std::ostream& operator <<(std::ostream& output, const File f);
+            friend std::ostream& operator <<(std::ostream& output, const File& f);
         private:
             std::fstream _file;
             Header _head;

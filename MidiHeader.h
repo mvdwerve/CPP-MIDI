@@ -1,6 +1,9 @@
 #ifndef MIDIHEADER_h
 #define MIDIHEADER_h
 
+#define HEADER_IDENTIFIER "MThd"
+#define HEADER_LENGTH "\0\0\0\6"
+
 namespace Midi {
     enum MidiMode {
         SINGLETRACK = 0,
@@ -10,11 +13,8 @@ namespace Midi {
 
     class Header {
         public:
-            /* This is "MThd" */
-            const static int IDENTIFIER = 0x4D546864;
-            const static int LENGTH = 6;
-
-            Header() : _fileFormat(MidiMode::MULTITRACK_SYNC), _deltaTicks(1) {}
+            Header();
+            virtual ~Header();
 
             MidiMode getFileFormat() { return _fileFormat; }
             int getNumTracks() { return _numTracks; }
