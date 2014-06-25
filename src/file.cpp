@@ -1,4 +1,4 @@
-#include "MidiFile.h"
+#include <cppmidi/file.h>
 #include <arpa/inet.h>
 
 #define SWAP_SHORT(s) ((s & 0xFF) << 8 | (s & 0xFF00) >> 8)

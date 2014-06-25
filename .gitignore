@@ -5,3 +5,7 @@ example
 *~
 *.a
 *.mid
+lib/*
+build/*
+objects/*
+test

@@ -1,5 +1,5 @@
-#ifndef MIDIHEADER_h
-#define MIDIHEADER_h
+#ifndef MIDI_HEADER_h
+#define MIDI_HEADER_h
 
 #define HEADER_IDENTIFIER "MThd"
 #define HEADER_LENGTH "\0\0\0\6"

@@ -7,15 +7,15 @@
  * Date: 22-06-2014
  */
 
-#ifndef MIDIFILE_h
-#define MIDIFILE_h
+#ifndef MIDI_FILE_h
+#define MIDI_FILE_h
 
 #include <vector>
 #include <string>
 #include <fstream>
 
-#include "MidiHeader.h"
-#include "MidiTrack.h"
+#include <cppmidi/track.h>
+#include <cppmidi/header.h>
 
 namespace Midi {
     class File {

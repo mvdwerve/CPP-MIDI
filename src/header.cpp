@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 #include <arpa/inet.h>
-#include "MidiHeader.h"
-#include "MidiFile.h"
+#include <cppmidi/header.h>
+#include <cppmidi/file.h>
 
 namespace Midi {
     /* XXX:2014-06-25:mvdwerve: Deltaticks should be calculated with a time signature. */

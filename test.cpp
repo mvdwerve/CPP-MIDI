@@ -1,4 +1,4 @@
-#include "MidiFile.h"
+#include <cppmidi/file.h>
 
 using Midi::File;
 
