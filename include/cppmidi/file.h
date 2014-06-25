@@ -4,7 +4,6 @@
  * This object will only very generally handle MIDI files.
  *
  * Author: Michael van der Werve
- * Date: 22-06-2014
  */
 
 #ifndef MIDI_FILE_h

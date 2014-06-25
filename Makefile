@@ -5,7 +5,6 @@
 # structure will be created soon.
 #
 # Author: Michael van der Werve
-# Date: 22-06-2014
 #
 
 # Basic g++ compiler
