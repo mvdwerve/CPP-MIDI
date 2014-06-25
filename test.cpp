@@ -2,7 +2,7 @@
 
 using Midi::File;
 
-int main(int argc, char* argv[]) {
+int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[]) {
     File midi("test.mid");
     midi.writeToFile();
 }

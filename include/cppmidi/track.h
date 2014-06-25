@@ -2,6 +2,8 @@
 #define MIDI_TRACK_h
 
 #include <iostream>
+#include <vector>
+#include <cppmidi/event.h>
 
 namespace Midi {
     class Track {
@@ -11,6 +13,7 @@ namespace Midi {
 
     private:
         uint32_t _length;
+        std::vector<Event*> _events;
     };
 }
 

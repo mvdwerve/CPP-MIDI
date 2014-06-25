@@ -6,6 +6,9 @@ namespace Midi {
     std::ostream& operator <<(std::ostream& output, const Track& t) {
         output.write(Track::IDENTIFIER, 4);
 
+        for (auto event : t._events)
+            output << *event;
+
         return output;
     }
 }

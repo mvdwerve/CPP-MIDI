@@ -19,6 +19,14 @@ namespace Midi {
         _file.close();
     }
 
+    bool File::addTrack(const Track& t) {
+        if (!_head.setNumTracks(_head.getNumTracks() + 1))
+            return false;
+
+        _tracks.push_back(t);
+        return true;
+    }
+
     std::ostream& operator <<(std::ostream& output, const File& f) {
         output << f._head;
 

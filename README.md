@@ -17,6 +17,7 @@ Build
 ----
 Building is very simple. The Makefile will create a static library in the lib/ directory.
 
+
 Example
 ----
 ```
