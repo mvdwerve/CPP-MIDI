@@ -43,6 +43,7 @@ LIBRARY_NAME := CPP-MIDI
 .PHONY: all
 .PHONY: dirs
 .PHONY: run
+.PHONY: vim-open
 
 all: test
 
@@ -63,3 +64,6 @@ clean:
 
 dirs:
 	$(MKDIR) $(BUILD_DIR) $(LIB_DIR) $(DOC_DIR)
+
+vim-open:
+	vim -p $(SRCFILES) $(HFILES)

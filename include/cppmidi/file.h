@@ -1,5 +1,5 @@
 /**
- * File: MidiFile.h
+ * file.h
  *
  * This object will only very generally handle MIDI files.
  *
@@ -63,17 +63,38 @@ namespace Midi {
             }
 
             /**
-             * Helper functions for writing in a specified endianness to a stream, using
-             * the full length of the format (e.g. uint16_t writes 2 bytes).
+             * Helper function for writing a cross platform big endian short.
              * @param s       The short which should be written in the endian.
-             * @param i       The int to be written in little or big endian.
-             * @param c       The byte to be written.
              * @param stream  The stream to be written to.
              */
             static void writeShortBig(std::ostream &stream, uint16_t s);
+
+            /**
+             * Helper function for writing a cross platform little endian short.
+             * @param s       The short which should be written in the endian.
+             * @param stream  The stream to be written to.
+             */
             static void writeShortLittle(std::ostream &stream, uint16_t s);
+
+            /**
+             * Helper function for writing a cross platform big endian int.
+             * @param i       The int which should be written in the endian.
+             * @param stream  The stream to be written to.
+             */
             static void writeIntBig(std::ostream &stream, uint32_t i);
+
+            /**
+             * Helper function for writing a cross platform little endian int.
+             * @param i       The short which should be written in the endian.
+             * @param stream  The stream to be written to.
+             */
             static void writeIntLittle(std::ostream &stream, uint32_t i);
+
+            /**
+             * Helper function for writing a cross platform byte.
+             * @param c         The char (uint8_t) to be written.
+             * @param stream    The stream to be written to.
+             */
             static void writeByte(std::ostream &stream, uint8_t c);
 
             /**

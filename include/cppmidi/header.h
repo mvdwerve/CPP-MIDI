@@ -1,16 +1,13 @@
 /**
  * header.h
  *
- * File for maintaining and easily writing the MIDI header.
+ * Class for maintaining and easily writing the MIDI header.
  *
  * @author Michael van der Werve
  */
 
 #ifndef MIDI_HEADER_h
 #define MIDI_HEADER_h
-
-#define HEADER_IDENTIFIER "MThd"
-#define HEADER_LENGTH "\0\0\0\6"
 
 /**
  * Setting up the midi namespace
@@ -29,6 +26,8 @@ namespace Midi {
 
     class Header {
         public:
+            const static char* IDENTIFIER;
+
             /**
              * Default constructor
              */
@@ -37,7 +36,7 @@ namespace Midi {
             /**
              * Destructor
              */
-            virtual ~Header();
+            virtual ~Header() {}
 
             /**
              * Method to get the currently used fileformat in the MidiMode style.
