@@ -35,6 +35,7 @@ INCLUDE_FLAG := -Iinclude/
 # Simple variables for the directories used when building.
 BUILD_DIR := build
 LIB_DIR := lib
+DOC_DIR := doc
 
 LIBRARY_NAME := CPP-MIDI
 
@@ -61,4 +62,4 @@ clean:
 	$(RM) $(LIB_DIR) $(OBJECT_FILES) $(BUILD_DIR) test.mid
 
 dirs:
-	$(MKDIR) $(BUILD_DIR) $(LIB_DIR)
+	$(MKDIR) $(BUILD_DIR) $(LIB_DIR) $(DOC_DIR)
