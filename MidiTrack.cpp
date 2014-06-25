@@ -2,7 +2,7 @@
 
 namespace Midi {
     std::ostream& operator <<(std::ostream& output, const Track t) {
-        output << Track::IDENTIFIER;
+        output.write(TRACK_IDENTIFIER, 4);
 
         return output;
     }

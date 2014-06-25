@@ -13,12 +13,15 @@
 #include <vector>
 #include <string>
 #include <fstream>
+
 #include "MidiHeader.h"
 #include "MidiTrack.h"
 
 namespace Midi {
     class File {
         public:
+            const static bool modeBigEndian;
+
             File() {}
             File(const std::string name);
 
@@ -32,15 +35,24 @@ namespace Midi {
                 return true;
             }
 
-            void write() {
+            void writeToFile() {
                 _file << *this;
             }
+
+            /**
+             * Helper functions to write shorts and ints with a specified endianness.
+             */
+            static void writeShortBig(std::ostream &stream, uint16_t s);
+            static void writeShortLittle(std::ostream &stream, uint16_t s);
+            static void writeIntBig(std::ostream &stream, uint32_t s);
+            static void writeIntLittle(std::ostream &stream, uint32_t s);
+            static void writeByte(std::ostream &stream, uint8_t c);
 
             friend std::ostream& operator <<(std::ostream& output, const File& f);
         private:
             std::fstream _file;
-            Header _head;
             std::vector<Track> _tracks;
+            Header _head;
     };
 }
 

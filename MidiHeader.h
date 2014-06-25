@@ -29,7 +29,7 @@ namespace Midi {
                 return true;
             }
 
-            friend std::ostream& operator <<(std::ostream& output, const Header head);
+            friend std::ostream& operator <<(std::ostream& output, const Header& head);
         private:
             MidiMode _fileFormat;
             int _numTracks;

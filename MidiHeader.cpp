@@ -1,9 +1,13 @@
 #include <fstream>
 #include <iostream>
+#include <string>
+#include <arpa/inet.h>
 #include "MidiHeader.h"
+#include "MidiFile.h"
 
 namespace Midi {
-    Header::Header() : _fileFormat(MidiMode::MULTITRACK_SYNC), _deltaTicks(1) {
+    /* XXX:2014-06-25:mvdwerve: Deltaticks should be calculated with a time signature. */
+    Header::Header() : _fileFormat(MidiMode::MULTITRACK_SYNC), _deltaTicks(64) {
 
     }
 
@@ -11,19 +15,14 @@ namespace Midi {
 
     }
 
-    std::ostream& operator <<(std::ostream& output, const Header head) {
-        char format[4] = {0};
-        char len[4] = {0};
-        char time[4] = {0};
-
-        format[3] = (char) head._fileFormat;
-        len[3] = (char) head._numTracks;
-
+    std::ostream& operator <<(std::ostream& output, const Header &head) {
         output.write(HEADER_IDENTIFIER, 4);
-        output.write(HEADER_LENGTH, 4);
-        output.write(format, 4);
-        output.write(len, 4);
-        output.write(time, 4);
+
+        File::writeIntBig(output, 6);
+        File::writeShortBig(output, head._fileFormat);
+        File::writeShortBig(output, head._numTracks);
+        File::writeShortBig(output, head._deltaTicks);
+
         return output;
     }
 }
