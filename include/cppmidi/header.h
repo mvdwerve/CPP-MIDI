@@ -26,6 +26,9 @@ namespace Midi {
 
     class Header {
         public:
+            /**
+             * This is the header identifier, literally "MThd".
+             * @var const static char*
             const static char* IDENTIFIER;
 
             /**

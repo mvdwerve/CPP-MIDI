@@ -7,6 +7,7 @@
  */
 
 #include <cppmidi/endianwriter.h>
+#include <arpa/inet.h>
 
 /**
  * Setting up the basic midi namespace.

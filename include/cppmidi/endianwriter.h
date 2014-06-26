@@ -11,7 +11,6 @@
 #define MIDI_ENDIANWRITER_h
 
 #include <iostream>
-#include <arpa/inet.h>
 
 /**
  * Define to swap a short and switch the endianness. Please note that this will completely ignore
