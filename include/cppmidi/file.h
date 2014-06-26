@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include <fstream>
 
 #include <cppmidi/track.h>
@@ -22,14 +23,6 @@
 namespace Midi {
     class File {
         public:
-            /**
-             * This boolean will tell if the computer is using little endian or big
-             * endian. This is important for writing to files, since many primitive
-             * datatypes have to be swapped.
-             * @var const static bool
-             */
-            const static bool modeBigEndian;
-
             /**
              * Default constructor
              */
@@ -52,7 +45,7 @@ namespace Midi {
              * @param  t     Track to be added by reference.
              * @return bool  True if track was added, false otherwise (too much tracks).
              */
-            bool addTrack(const Track& t);
+            bool addTrack(Track* t);
 
             /**
              * Function to write this Midi::File to the actual internal file object.
@@ -61,41 +54,6 @@ namespace Midi {
             void writeToFile() {
                 _file << *this;
             }
-
-            /**
-             * Helper function for writing a cross platform big endian short.
-             * @param s       The short which should be written in the endian.
-             * @param stream  The stream to be written to.
-             */
-            static void writeShortBig(std::ostream &stream, uint16_t s);
-
-            /**
-             * Helper function for writing a cross platform little endian short.
-             * @param s       The short which should be written in the endian.
-             * @param stream  The stream to be written to.
-             */
-            static void writeShortLittle(std::ostream &stream, uint16_t s);
-
-            /**
-             * Helper function for writing a cross platform big endian int.
-             * @param i       The int which should be written in the endian.
-             * @param stream  The stream to be written to.
-             */
-            static void writeIntBig(std::ostream &stream, uint32_t i);
-
-            /**
-             * Helper function for writing a cross platform little endian int.
-             * @param i       The short which should be written in the endian.
-             * @param stream  The stream to be written to.
-             */
-            static void writeIntLittle(std::ostream &stream, uint32_t i);
-
-            /**
-             * Helper function for writing a cross platform byte.
-             * @param c         The char (uint8_t) to be written.
-             * @param stream    The stream to be written to.
-             */
-            static void writeByte(std::ostream &stream, uint8_t c);
 
             /**
              * Friend function to overload the operator to write to streams, used for
@@ -116,9 +74,9 @@ namespace Midi {
             /**
              * Internally a vector is used to keep reference of all the tracks. Please
              * note that this will append the track by reference
-             * @var std::vector<Track>
+             * @var std::vector<Track*>
              */
-            std::vector<Track> _tracks;
+            std::vector<Track*> _tracks;
 
             /**
              * This will keep track of the header data.

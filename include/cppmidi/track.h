@@ -32,6 +32,18 @@ namespace Midi {
          * @return std::ostream& Original output stream.
          */
         friend std::ostream& operator <<(std::ostream& output, const Track& t);
+
+        /**
+         * Method to add an event to the internal events.
+         * @param   e   The event to be added.
+         * @todo Check the length.
+         */
+        bool addEvent(Event* e) {
+            _length += e->getLength();
+            _events.push_back(e);
+
+            return true;
+        }
     private:
         /**
          * Integer to keep track of the track length, which is a maximum of 4 bytes.

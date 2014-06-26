@@ -6,12 +6,10 @@
  * @author Michael van der Werve
  */
 
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <arpa/inet.h>
 #include <cppmidi/header.h>
-#include <cppmidi/file.h>
+#include <cppmidi/endianwriter.h>
 
 /**
  * Setting up the midi namespace.
@@ -23,7 +21,7 @@ namespace Midi {
      * Default constructor
      * @todo calculate delta ticks.
      */
-    Header::Header() : _fileFormat(MidiMode::MULTITRACK_SYNC), _deltaTicks(64) {
+    Header::Header() : _fileFormat(MidiMode::MULTITRACK_SYNC), _numTracks(0), _deltaTicks(64) {
 
     }
 
@@ -39,13 +37,13 @@ namespace Midi {
         output.write(Header::IDENTIFIER, 4);
 
         /* Slightly verbose code but unfortunately there is no other way. Writing
-         * the header info to the stream using the helper fucntions provided by the
+         * the header info to the stream using the helper functions provided by the
          * Midi::File class.
          */
-        File::writeIntBig(output, 6);
-        File::writeShortBig(output, head._fileFormat);
-        File::writeShortBig(output, head._numTracks);
-        File::writeShortBig(output, head._deltaTicks);
+        EndianWriter::writeIntBig(output, 6);
+        EndianWriter::writeShortBig(output, head._fileFormat);
+        EndianWriter::writeShortBig(output, head._numTracks);
+        EndianWriter::writeShortBig(output, head._deltaTicks);
 
         return output;
     }
