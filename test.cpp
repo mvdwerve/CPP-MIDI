@@ -17,13 +17,25 @@ int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[
     File midi("test.mid");
     Track *t = new Track();
 
-    Event* tmp;
+    Message *on, *off;
+    uint8_t baseNote = 0x30;
 
     /* Creating 16 messages to put in the midi. */
     for (int i = 0; i < 16; i++) {
-        tmp = new Message();
-        t->addEvent(tmp);
-        events.push_back(tmp);
+        on = new Message();
+        off = new Message();
+
+        on->setVelocity(0x64);
+        off->setVelocity(0x00);
+
+        on->setNote(++baseNote);
+        off->setNote(baseNote);
+
+        t->addEvent(on);
+        t->addEvent(off);
+
+        events.push_back(on);
+        events.push_back(off);
     }
 
     midi.addTrack(t);

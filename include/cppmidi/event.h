@@ -24,7 +24,7 @@ namespace Midi {
             /**
              * Default constructor.
              */
-            Event() {}
+            Event() : _timeDiff(64) {}
 
             /**
              * Destructor

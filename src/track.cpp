@@ -27,7 +27,11 @@ namespace Midi {
      */
     std::ostream& operator <<(std::ostream& output, const Track& t) {
         output.write(Track::IDENTIFIER, 4);
-        EndianWriter::writeIntBig(output, t._length + 4);
+        EndianWriter::writeIntBig(output, t._length + 4 + 3);
+
+        EndianWriter::writeByte(output, 0x00);
+        EndianWriter::writeByte(output, 0xC0);
+        EndianWriter::writeByte(output, 0x01);
 
         for (auto event : t._events)
             output << *event;

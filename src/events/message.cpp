@@ -21,6 +21,8 @@ namespace Midi {
         Message::Message() : Event() {
             _length = 4;
             _timeDiff = 64;
+            _velocity = 0x64;
+            _status = 0x90;
         }
 
          /**
@@ -29,14 +31,9 @@ namespace Midi {
          * @return std::ostream& The original output stream.
          */
         std::ostream& Message::print(std::ostream& output) const {
-            /* Stubs to perform middle C on on channel 0 with velocity of 0x40. */
-            uint16_t status_stub = 0x90;
-            uint16_t note_stub = 0x3C;
-            uint16_t velocity_stub = 0xFF;
-
-            EndianWriter::writeByte(output, status_stub);
-            EndianWriter::writeByte(output, note_stub);
-            EndianWriter::writeByte(output, velocity_stub);
+            EndianWriter::writeByte(output, _status);
+            EndianWriter::writeByte(output, _note);
+            EndianWriter::writeByte(output, _velocity);
 
             return output;
         }
