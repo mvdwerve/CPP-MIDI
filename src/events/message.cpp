@@ -32,7 +32,7 @@ namespace Midi {
             /* Stubs to perform middle C on on channel 0 with velocity of 0x40. */
             uint16_t status_stub = 0x90;
             uint16_t note_stub = 0x3C;
-            uint16_t velocity_stub = 0x40;
+            uint16_t velocity_stub = 0xFF;
 
             EndianWriter::writeByte(output, status_stub);
             EndianWriter::writeByte(output, note_stub);
