@@ -1,12 +1,12 @@
 /**
- * endianwriter.cpp
+ * endian.cpp
  *
- * File with implementations for the Midi::EndianWriter class.
+ * File with implementations for the Midi::Endian class.
  *
  * @author Michael van der Werve
  */
 
-#include <cppmidi/endianwriter.h>
+#include <cppmidi/endian.h>
 #include <arpa/inet.h>
 
 /**
@@ -19,6 +19,6 @@ namespace Midi {
      * datatypes have to be swapped.
      * @var const static bool
      */
-    const bool EndianWriter::modeBigEndian = (ntohl(1) == 1);
+    const bool Endian::modeBigEndian = (ntohl(1) == 1);
 }
 

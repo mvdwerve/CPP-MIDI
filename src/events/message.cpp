@@ -6,7 +6,7 @@
  * @author Michael van der Werve
  */
 
-#include <cppmidi/endianwriter.h>
+#include <cppmidi/endian.h>
 #include <cppmidi/events/message.h>
 
 /**
@@ -41,14 +41,14 @@ namespace Midi {
          * @return std::ostream& The original output stream.
          */
         std::ostream& Message::print(std::ostream& output) const {
-            EndianWriter::writeByte(output, _type << 4 | _channel);
-            EndianWriter::writeByte(output, _data1);
+            Endian::writeByte(output, _type << 4 | _channel);
+            Endian::writeByte(output, _data1);
 
             /* The last data byte should be omitted if we're writing a program change or
              * channel aftertouch event.
              */
             if (_type != MessageType::PROGRAM_CHANGE && _type != MessageType::CHANNEL_AFTERTOUCH)
-                EndianWriter::writeByte(output, _data2);
+                Endian::writeByte(output, _data2);
 
             return output;
         }

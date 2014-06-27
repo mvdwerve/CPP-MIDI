@@ -7,8 +7,8 @@
  * @author Michael van der Werve
  */
 
-#ifndef MIDI_ENDIANWRITER_h
-#define MIDI_ENDIANWRITER_h
+#ifndef MIDI_endian_h
+#define MIDI_endian_h
 
 #include <iostream>
 
@@ -50,7 +50,7 @@ namespace Midi {
              * @param stream  The stream to be written to.
              */
             inline static void writeIntBig(std::ostream &stream, uint32_t i) {
-                uint32_t result = (EndianWriter::modeBigEndian) ? i : SWAP_INT(i);
+                uint32_t result = (Endian::modeBigEndian) ? i : SWAP_INT(i);
 
                 stream.write(CHARPTR(result), sizeof(i));
             }
@@ -61,7 +61,7 @@ namespace Midi {
              * @param stream  The stream to be written to.
              */
             inline static void writeIntLittle(std::ostream &stream, uint32_t i) {
-                uint32_t result = (EndianWriter::modeBigEndian) ? SWAP_INT(i) : i;
+                uint32_t result = (Endian::modeBigEndian) ? SWAP_INT(i) : i;
 
                 stream.write(CHARPTR(result), sizeof(i));
             }
@@ -72,7 +72,7 @@ namespace Midi {
              * @param stream  The stream to be written to.
              */
             inline static void writeShortBig(std::ostream &stream, uint16_t s) {
-                uint16_t result = (EndianWriter::modeBigEndian) ? s : SWAP_SHORT(s);
+                uint16_t result = (Endian::modeBigEndian) ? s : SWAP_SHORT(s);
 
                 stream.write(CHARPTR(result), sizeof(s));
             }
@@ -83,7 +83,7 @@ namespace Midi {
              * @param stream  The stream to be written to.
              */
             inline static void writeShortLittle(std::ostream &stream, uint16_t s) {
-                uint16_t result = (EndianWriter::modeBigEndian) ? SWAP_SHORT(s) : s;
+                uint16_t result = (Endian::modeBigEndian) ? SWAP_SHORT(s) : s;
 
                 stream.write(CHARPTR(result), sizeof(s));
             }

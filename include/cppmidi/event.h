@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <vector>
-#include <cppmidi/endianwriter.h>
+#include <cppmidi/endian.h>
 
 /**
  * Setting up the basic namespace.
@@ -47,7 +47,7 @@ namespace Midi {
              * @param t      The event.
              */
             friend std::ostream& operator <<(std::ostream& output, const Event& t) {
-                EndianWriter::writeByte(output, t.deltaTime);
+                Endian::writeByte(output, t.deltaTime);
                 return t.print(output);
             }
 

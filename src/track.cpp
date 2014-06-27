@@ -7,7 +7,7 @@
  */
 
 #include <cppmidi/track.h>
-#include <cppmidi/endianwriter.h>
+#include <cppmidi/endian.h>
 
 /**
  * Setting up the basic midi namespace.
@@ -27,12 +27,12 @@ namespace Midi {
      */
     std::ostream& operator <<(std::ostream& output, const Track& t) {
         output.write(Track::IDENTIFIER, 4);
-        EndianWriter::writeIntBig(output, t._length + 4 + 3);
+        Endian::writeIntBig(output, t._length + 4 + 3);
 
         /* XXX:2014-05-26:mvdwerve: This is simply a program change, now manually added. */
-        EndianWriter::writeByte(output, 0x00);
-        EndianWriter::writeByte(output, 0xC0);
-        EndianWriter::writeByte(output, 0x01);
+        Endian::writeByte(output, 0x00);
+        Endian::writeByte(output, 0xC0);
+        Endian::writeByte(output, 0x01);
 
         for (auto event : t._events)
             output << *event;
@@ -40,10 +40,10 @@ namespace Midi {
         /* XXX:2014-05-26:mvdwerve: Make this code better and with a define, because
          * this is a set-in-stone sequence. This will be part of a metaevent eot.
          */
-        EndianWriter::writeByte(output, 0x00);
-        EndianWriter::writeByte(output, 0xFF);
-        EndianWriter::writeByte(output, 0x2F);
-        EndianWriter::writeByte(output, 0x00);
+        Endian::writeByte(output, 0x00);
+        Endian::writeByte(output, 0xFF);
+        Endian::writeByte(output, 0x2F);
+        Endian::writeByte(output, 0x00);
 
         return output;
     }

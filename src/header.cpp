@@ -9,7 +9,7 @@
 #include <string>
 #include <arpa/inet.h>
 #include <cppmidi/header.h>
-#include <cppmidi/endianwriter.h>
+#include <cppmidi/endian.h>
 
 /**
  * Setting up the midi namespace.
@@ -40,10 +40,10 @@ namespace Midi {
          * the header info to the stream using the helper functions provided by the
          * Midi::File class.
          */
-        EndianWriter::writeIntBig(output, 6);
-        EndianWriter::writeShortBig(output, head._fileFormat);
-        EndianWriter::writeShortBig(output, head._numTracks);
-        EndianWriter::writeShortBig(output, head._deltaTicks);
+        Endian::writeIntBig(output, 6);
+        Endian::writeShortBig(output, head._fileFormat);
+        Endian::writeShortBig(output, head._numTracks);
+        Endian::writeShortBig(output, head._deltaTicks);
 
         return output;
     }
