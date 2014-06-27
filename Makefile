@@ -61,7 +61,7 @@ run: $(BUILD_DIR)/test
 	$(BUILD_DIR)/test && hexdump -C test.mid
 
 clean:
-	$(RM) $(LIB_DIR) $(OBJECT_FILES) $(BUILD_DIR) test.mid
+	$(RM) $(LIB_DIR) $(OBJECT_FILES) $(BUILD_DIR) *.mid
 
 $(DIRS):
 	$(MKDIR) $@
