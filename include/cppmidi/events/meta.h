@@ -62,13 +62,9 @@ namespace Midi {
                 /**
                  * Method which adds the current data length plus the usual length of
                  * this event.
-                 * @return uint64_t The total length in bytes of this sysex event.
+                 * @return uint32_t The total length in bytes of this sysex event.
                  */
-                virtual uint64_t getLength() { return _length + _data.size(); }
-
-                /**
-                 * Method to set the data of this metaevent.
-                 */
+                virtual uint32_t getLength() { return _length + _data.size(); }
             private:
                 /**
                  * The type of this meta event.

@@ -53,9 +53,9 @@ namespace Midi {
 
             /**
              * Method to return the length of this event, which can be very large.
-             * @return uint64_t
+             * @return uint32_t
              */
-            virtual uint64_t getLength() { return _length; }
+            virtual uint32_t getLength() { return _length; }
 
             /**
              * Time difference since last event. Since this can be anything, the trivial accessor is
@@ -67,12 +67,12 @@ namespace Midi {
 
         protected:
             /**
-             * Length of this event. Since the SysEx event can be virtually limitless in data because
-             * the midi file specification gives no limit, it has to be a 64 bit number to prevent any
+             * Length of this event. Since the SysEx event can be limitless (up to an int) in data because
+             * the midi file specification gives no limit, it has to be a 32 bit number to prevent any
              * overflows.
-             * @var uint64_t
+             * @var uint32_t
              */
-            uint64_t _length;
+            uint32_t _length;
     };
 }
 

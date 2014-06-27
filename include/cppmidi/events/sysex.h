@@ -39,7 +39,7 @@ namespace Midi {
                  * this event.
                  * @return uint64_t The total length in bytes of this sysex event.
                  */
-                virtual uint64_t getLength() { return _length + data.size(); }
+                virtual uint32_t getLength() { return _length + data.size(); }
 
                 /**
                  * Variable with the manufacturer id, which could be anything.

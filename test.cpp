@@ -70,4 +70,7 @@ int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[
     /* Cleaning up all the notes, since we should not expect the library to do that. */
     for (auto event : events)
         delete event;
+
+    /* Please note, doing this before the file is written WILL cause segmentation faults. */
+    delete t;
 }
