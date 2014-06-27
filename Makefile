@@ -37,33 +37,34 @@ BUILD_DIR := build
 LIB_DIR := lib
 DOC_DIR := doc
 
+DIRS := $(BUILD_DIR) $(LIB_DIR) $(DOC_DIR)
+
 LIBRARY_NAME := CPP-MIDI
 
 .PHONY: clean
 .PHONY: all
-.PHONY: dirs
 .PHONY: run
 .PHONY: vim-open
 
-all: test
+all: $(BUILD_DIR)/test
 
-%.o: %.cpp dirs
+%.o: %.cpp
 	$(CPP) $(INCLUDE_FLAG) $(CFLAGS) $< -c -o $@
 
-lib$(LIBRARY_NAME).a: $(OBJECT_FILES)
-	$(CREATELIB) $(LIB_DIR)/$@ $^
+$(LIB_DIR)/lib$(LIBRARY_NAME).a: $(OBJECT_FILES)
+	$(CREATELIB) $@ $^
 
-test: test.cpp lib$(LIBRARY_NAME).a
-	$(CPP) $< -L$(LIB_DIR) -l$(LIBRARY_NAME) $(INCLUDE_FLAG) $(CFLAGS) -o $(BUILD_DIR)/$@
+$(BUILD_DIR)/test: test.cpp $(DIRS) $(LIB_DIR)/lib$(LIBRARY_NAME).a
+	$(CPP) $< -L$(LIB_DIR) -l$(LIBRARY_NAME) $(INCLUDE_FLAG) $(CFLAGS) -o $@
 
-run: test
+run: $(BUILD_DIR)/test
 	$(BUILD_DIR)/test && hexdump -C test.mid
 
 clean:
 	$(RM) $(LIB_DIR) $(OBJECT_FILES) $(BUILD_DIR) test.mid
 
-dirs:
-	$(MKDIR) $(BUILD_DIR) $(LIB_DIR) $(DOC_DIR)
+$(DIRS):
+	$(MKDIR) $@
 
 vim-open:
 	vim -p $(SRCFILES) $(HFILES)
