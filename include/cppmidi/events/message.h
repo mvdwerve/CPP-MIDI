@@ -18,13 +18,38 @@
  */
 namespace Midi {
     namespace Events {
+        /**
+         * Enum to indicate the message type, since this message type is limited to very select
+         * cases. Names are quite explanatory, otherwise see midi specification for details on the
+         * different kind of events.
+         */
+        enum MessageType {
+            NOTE_OFF = 0x8,
+            NOTE_ON = 0x9,
+            NOTE_AFTERTOUCH = 0xA,
+            CONTROLLER = 0xB,
+            PROGRAM_CHANGE = 0xC,
+            CHANNEL_AFTERTOUCH = 0xD,
+            PITCH_BEND = 0xE
+        };
+
         class Message : public Event {
             public:
                 /**
                  * Constructor
-                 * @todo Variable length, since 4 is for the stubs.
+                 * @param m The type of message to be constructed,
                  */
-                Message();
+                Message(MessageType m);
+
+                /**
+                 * Constructor, which will directly construct a message with the specified values.
+                 * @warn This constructor will clamp all incorrect data to their min/max values.
+                 * @param m The type of this message.
+                 * @param channel The channel the message should be played on.
+                 * @param data1 The value of the first data byte.
+                 * @param data2 The value of the second data byte.
+                 */
+                Message(MessageType m, uint8_t channel, uint8_t data1, uint8_t data2);
 
                 /**
                  * Destructor
@@ -39,59 +64,77 @@ namespace Midi {
                 virtual std::ostream& print(std::ostream& output) const;
 
                 /**
-                 * Method to get the status byte from the current message.
-                 * @return uint8_t The status in 8 bits.
+                 * Method to get the type byte from the current message.
+                 * @return uint8_t The type as 8 bits, but maximum value of 4 bits.
                  */
-                uint8_t getStatus() { return _status; }
+                uint8_t getType() { return _type; }
 
                 /**
-                 * Method to get the note from this message.
-                 * @return uint8_t The current notebyte of the message.
+                 * Method to get the channel byte from the current message.
+                 * @return uint8_t The type as 8 bits, but maximum value of 4 bits.
                  */
-                uint8_t getNote() { return _note; }
+                uint8_t getChannel() { return _channel; }
 
                 /**
-                 * Method to get the velocity of the message.
-                 * @return uint8_t The current velocity byte.
+                 * Method to set the type byte for the current message. This could alter the length if
+                 * it is a program change or channel aftertouch event, in which case the last byte is not
+                 * used.
+                 * @param t Type as a MessageType.
                  */
-                uint8_t getVelocity() { return _velocity; }
+                void setType(MessageType t) {
+                    _type = t;
 
-
-                /**
-                 * Method to set the status byte from the current message.
-                 * @param status The status byte.
-                 */
-                void setStatus(uint8_t status) { _status = status; }
-
-                /**
-                 * Method to set the note from this message.
-                 * @param note The velocity byte.
-                 */
-                void setNote(uint8_t note) { _note = note; }
+                    if (t == MessageType::PROGRAM_CHANGE || t == MessageType::CHANNEL_AFTERTOUCH)
+                        _length = 3;
+                    else
+                        _length = 4;
+                }
 
                 /**
-                 * Method to set the velocity of the message.
-                 * @param velocity The velocity byte.
+                 * Method to set the note from this message. The channel number cannot exceed 16 so
+                 * the maximum channel is clamped to 15.
+                 * @param note The velocity nibble.
                  */
-                void setVelocity(uint8_t velocity) { _velocity = velocity; }
+                void setChannel(uint8_t channel) { _channel = (channel < 16) ? channel : 15; }
+
+                /**
+                 * Method to set the first data byte. This is always clamped between 0 and 127 because otherwise
+                 * it will become a sysex message status bit and will be interpreted as such.
+                 * @param data The first databyte.
+                 */
+                void setData1(uint8_t data) { _data1 = (data < 128) ? data : 127; }
+
+                /**
+                 * Method to set the second data byte. This is always clamped between 0 and 127 because otherwise
+                 * it will become a sysex message status bit and will be interpreted as such.
+                 * @param data The second databyte.
+                 */
+                void setData2(uint8_t data) { _data2 = (data < 128) ? data : 127; }
             private:
                 /**
-                 * Current status bit.
+                 * Current type byte, with the high nibble set to the status. Ranges from 0x8 to 0xE.
                  * @var uint8_t
                  */
-                uint8_t _status;
+                uint8_t _type;
 
                 /**
-                 * Note for this message.
+                 * Current note channel. Ranges from 0-15.
                  * @var uint8_t
                  */
-                uint8_t _note;
+                uint8_t _channel;
 
                 /**
-                 * Current velocity.
+                 * Data byte one, used in all events. Ranges from 0-127.
                  * @var uint8_t
                  */
-                uint8_t _velocity;
+                uint8_t _data1;
+
+                /**
+                 * Data byte two, used in all events except for the program change and the
+                 * channel aftertouch. Ranges from 0-127.
+                 * @var uint8_t
+                 */
+                uint8_t _data2;
         };
     }
 }

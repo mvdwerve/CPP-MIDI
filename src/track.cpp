@@ -29,6 +29,7 @@ namespace Midi {
         output.write(Track::IDENTIFIER, 4);
         EndianWriter::writeIntBig(output, t._length + 4 + 3);
 
+        /* XXX:2014-05-26:mvdwerve: This is simply a program change, now manually added. */
         EndianWriter::writeByte(output, 0x00);
         EndianWriter::writeByte(output, 0xC0);
         EndianWriter::writeByte(output, 0x01);

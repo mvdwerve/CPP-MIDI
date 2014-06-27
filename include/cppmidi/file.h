@@ -53,6 +53,7 @@ namespace Midi {
              */
             void writeToFile() {
                 _file << *this;
+                _file.flush();
             }
 
             /**

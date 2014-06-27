@@ -24,7 +24,7 @@ namespace Midi {
             /**
              * Default constructor.
              */
-            Event() : _timeDiff(64) {}
+            Event() : deltaTime(0) {}
 
             /**
              * Destructor
@@ -47,28 +47,24 @@ namespace Midi {
              * @param t      The event.
              */
             friend std::ostream& operator <<(std::ostream& output, const Event& t) {
-                EndianWriter::writeByte(output, t._timeDiff);
+                EndianWriter::writeByte(output, t.deltaTime);
                 return t.print(output);
             }
-
-            /**
-             * Method to return the current channel which is played to.
-             * @return uint8_t
-             */
-            uint8_t getChannel() { return _channel; }
 
             /**
              * Method to return the length of this event, which can be very large.
              * @return uint64_t
              */
-            uint64_t getLength() { return _length;  }
-        protected:
+            uint64_t getLength() { return _length; }
+
             /**
-             * Variable to keep track of the current channel.
+             * Time difference since last event. Since this can be anything, the trivial accessor is
+             * omitted.
              * @var uint8_t
              */
-            uint8_t _channel;
+            uint8_t deltaTime;
 
+        protected:
             /**
              * Length of this event. Since the SysEx event can be virtually limitless in data because
              * the midi file specification gives no limit, it has to be a 64 bit number to prevent any
@@ -76,12 +72,6 @@ namespace Midi {
              * @var uint64_t
              */
             uint64_t _length;
-
-            /**
-             * Time difference since last event.
-             * @var uint8_t
-             */
-            uint8_t _timeDiff;
     };
 }
 
