@@ -1,5 +1,5 @@
 /**
- * file.cpp
+ * message.cpp
  *
  * File with implementations for the Midi::Event::Message class.
  *

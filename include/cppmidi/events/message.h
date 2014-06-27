@@ -7,8 +7,8 @@
  * @author Michael van der Werve
  */
 
-#ifndef MIDI_EVENT_MIDI_h
-#define MIDI_EVENT_MIDI_h
+#ifndef MIDI_EVENT_MESSAGE_h
+#define MIDI_EVENT_MESSAGE_h
 
 #include <iostream>
 #include <cppmidi/event.h>
