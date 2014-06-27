@@ -24,7 +24,7 @@ namespace Midi {
             /**
              * Default constructor.
              */
-            Event() : deltaTime(0) {}
+            Event() : deltaTime(0), _length(1) {}
 
             /**
              * Destructor
@@ -55,11 +55,12 @@ namespace Midi {
              * Method to return the length of this event, which can be very large.
              * @return uint64_t
              */
-            uint64_t getLength() { return _length; }
+            virtual uint64_t getLength() { return _length; }
 
             /**
              * Time difference since last event. Since this can be anything, the trivial accessor is
              * omitted.
+             * @todo I have found out this should be a variable length value, will fix later. FIXME
              * @var uint8_t
              */
             uint8_t deltaTime;

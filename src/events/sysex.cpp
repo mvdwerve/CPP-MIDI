@@ -27,23 +27,13 @@ namespace Midi {
             /* Since we only know the data consists of bytes and apart from that nothing,
              * simply write them to the output stream.
              */
-            for (auto byte : _data)
+            for (auto byte : data)
                 Endian::writeByte(output, byte);
 
             /* Writing the end of the SysEx to the stream. */
             Endian::writeByte(output, 0xF7);
 
             return output;
-        }
-
-        /**
-         * Method to set the data. Derived classes should also use this, since
-         * the new length should be correctly saved.
-         * @param data The data to be set.
-         */
-        void SysEx::setData(std::vector<uint8_t> data) {
-            _data = data;
-            _dataLength = data.size();
         }
     }
 }

@@ -21,10 +21,11 @@ namespace Midi {
         class SysEx : public Event {
             public:
                 /**
-                 * Constructor.
+                 * Constructor from the ID. The type is standard 0xF0 (unsure what other types
+                 * do and are for exactly) and the new length becomes 3.
                  * @param id The id of the manufacturer.
                  */
-                SysEx(uint8_t id) { manufacturerID = id; }
+                SysEx(uint8_t id) : Event(), manufacturerID(id), _type(0xF0) { _length = 3; }
 
                 /**
                  * Function which prints this event.
@@ -34,28 +35,17 @@ namespace Midi {
                 virtual std::ostream& print(std::ostream& output) const;
 
                 /**
-                 * Method to set the data. Derived classes should also use this, since
-                 * the new length should be correctly saved.
-                 * @param data The data to be set.
+                 * Method which adds the current data length plus the usual length of
+                 * this event.
+                 * @return uint64_t The total length in bytes of this sysex event.
                  */
-                void setData(std::vector<uint8_t> data);
+                virtual uint64_t getLength() { return _length + data.size(); }
 
                 /**
                  * Variable with the manufacturer id, which could be anything.
                  * @var uint8_t
                  */
                 uint8_t manufacturerID;
-            private:
-                /**
-                 * This variable holds the internal data length.
-                 * @var uint64_t
-                 */
-                uint64_t _dataLength;
-
-                /**
-                 * The type of this sysex event.
-                 */
-                uint8_t _type;
 
                 /**
                  * This variable will hold the data - unfortunately we cannot do much
@@ -63,7 +53,12 @@ namespace Midi {
                  * manufacturer. However this should/could be set in the case of a system exclusive event.
                  * @var uint8_t
                  */
-                std::vector<uint8_t> _data;
+                std::vector<uint8_t> data;
+            private:
+                /**
+                 * The type of this sysex event.
+                 */
+                uint8_t _type;
         };
     }
 }
