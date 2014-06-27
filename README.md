@@ -3,7 +3,7 @@ CPP-MIDI
 
 Introduction
 ----
-CPP-MIDI is a very incomplete library for handling MIDI files, and is not released or even alpha yet.
+CPP-MIDI is a very incomplete library for handling MIDI files, and is _not_ released or even alpha yet.
 
 Unimplemented:
 - File reading
@@ -45,8 +45,8 @@ This will build everything and execute the command with the generated test file.
 
 Example
 ----
-The best example is the test file, which is displayed below. Please note that the code below might be outdated, since this readme is not updated nearly as much as file itself ofcourse.
-```
+The best example is the test file, which is displayed below. _Please note that the code below might be outdated, since this readme is not updated nearly as much as file itself ofcourse._
+```C++
 #include <cppmidi/file.h>
 #include <cppmidi/events/message.h>
 #include <cppmidi/event.h>
