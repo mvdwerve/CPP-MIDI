@@ -3,16 +3,16 @@ CPP-MIDI
 
 Introduction
 ----
-CPP-MIDI is a very incomplete library for handling MIDI files, and is _not_ released or even alpha yet.
+CPP-MIDI is a very incomplete library for handling MIDI files, and is _not_ released or even alpha yet. Please note that this library aims to be a very simple and light interface to MIDI only, and does so at quite a low level. Soon I will create a library which handles music more generally, also for C++ of course.
 
 Unimplemented:
 - File reading
-- Variable length values
 
 Implemented:
 - Header info, track info and data writing to a file.
 - Files recognized by music players
 - Events
+    - Variable Length Values
     - Message Event
         - Note off
         - Note on
