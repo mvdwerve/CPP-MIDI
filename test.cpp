@@ -44,7 +44,7 @@ int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[
 
         /* The off event will fire 64 ticks after the note event. */
         note->deltaTime = 0;
-        off->deltaTime = 64;
+        off->deltaTime = 0x80;
 
         /* Add the events to the track. */
         t->addEvent(note);

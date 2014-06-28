@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <cppmidi/event.h>
+#include <cppmidi/vlvalue.h>
 
 /**
  * Setting up the basic namespace.
@@ -45,7 +46,7 @@ namespace Midi {
                  * is a fixed header for this event (0xFF).
                  * @param t The type of metaevent to create.
                  */
-                Meta(MetaType t) : Event(), _type(t) { _length++; }
+                Meta(MetaType t) : Event(), _type(t) { }
 
                 /**
                  * Destructor.
@@ -64,12 +65,19 @@ namespace Midi {
                  * this event.
                  * @return uint32_t The total length in bytes of this sysex event.
                  */
-                virtual uint32_t getLength() { return _length + _data.size(); }
+                virtual uint32_t getLength() { return Event::getLength() + _dataSize.getLength(); }
             private:
                 /**
                  * The type of this meta event.
+                 * @var uint8_t
                  */
                 uint8_t _type;
+
+                /**
+                 * The VLValue with the length of the data.
+                 * @var VLValue
+                 */
+                VLValue _dataSize;
 
                 /**
                  * Variable to hold the data for the meta event.

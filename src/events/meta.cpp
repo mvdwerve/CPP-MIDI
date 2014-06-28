@@ -24,10 +24,8 @@ namespace Midi {
             Endian::writeByte(output, 0xFF);
             Endian::writeByte(output, _type);
 
-            /* Writing the size to the stream. TODO: Horribly wrong, this should be a VLV,
-             * FIXME!
-             */
-            Endian::writeByte(output, _data.size());
+            /* Writing the VLValue to the stream. */
+            output << _dataSize;
 
             /* Writing the data bytes to the stream. */
             for (auto byte : _data)

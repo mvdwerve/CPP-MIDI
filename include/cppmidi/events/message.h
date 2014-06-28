@@ -81,13 +81,19 @@ namespace Midi {
                  * used.
                  * @param t Type as a MessageType.
                  */
-                void setType(MessageType t) {
-                    _type = t;
+                void setType(MessageType t) { _type = t; }
 
-                    if (t == MessageType::PROGRAM_CHANGE || t == MessageType::CHANNEL_AFTERTOUCH)
-                        _length = 3;
+                /**
+                 * Method to get the length of this message in bytes. This will depend on the type
+                 * of this message, since some messages ignore the 4th byte.
+                 * @return uint32_t The length in bytes.
+                 */
+                virtual uint32_t getLength() {
+                    if (_type == MessageType::PROGRAM_CHANGE
+                            || _type == MessageType::CHANNEL_AFTERTOUCH)
+                        return 2 + Event::getLength();
                     else
-                        _length = 4;
+                        return 3 + Event::getLength();
                 }
 
                 /**
@@ -98,15 +104,15 @@ namespace Midi {
                 void setChannel(uint8_t channel) { _channel = (channel < 16) ? channel : 15; }
 
                 /**
-                 * Method to set the first data byte. This is always clamped between 0 and 127 because otherwise
-                 * it will become a sysex message status bit and will be interpreted as such.
+                 * Method to set the first data byte. This is always clamped between 0 and 127
+                 * because otherwise it might collide with some other messages.
                  * @param data The first databyte.
                  */
                 void setData1(uint8_t data) { _data1 = (data < 128) ? data : 127; }
 
                 /**
-                 * Method to set the second data byte. This is always clamped between 0 and 127 because otherwise
-                 * it will become a sysex message status bit and will be interpreted as such.
+                 * Method to set the second data byte. This is always clamped between 0 and 127
+                 * because otherwise it might collide with some other messages.
                  * @param data The second databyte.
                  */
                 void setData2(uint8_t data) { _data2 = (data < 128) ? data : 127; }

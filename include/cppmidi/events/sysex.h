@@ -25,7 +25,7 @@ namespace Midi {
                  * do and are for exactly) and the new length becomes 3.
                  * @param id The id of the manufacturer.
                  */
-                SysEx(uint8_t id) : Event(), manufacturerID(id), _type(0xF0) { _length = 3; }
+                SysEx(uint8_t id) : Event(), manufacturerID(id), _type(0xF0) { }
 
                 /**
                  * Function which prints this event.
@@ -39,7 +39,7 @@ namespace Midi {
                  * this event.
                  * @return uint64_t The total length in bytes of this sysex event.
                  */
-                virtual uint32_t getLength() { return _length + data.size(); }
+                virtual uint32_t getLength() { return Event::getLength() + 2 + data.size(); }
 
                 /**
                  * Variable with the manufacturer id, which could be anything.
@@ -50,7 +50,8 @@ namespace Midi {
                 /**
                  * This variable will hold the data - unfortunately we cannot do much
                  * with the data because it varies so much from thing manufacturer to
-                 * manufacturer. However this should/could be set in the case of a system exclusive event.
+                 * manufacturer. However this should/could be set in the case of a
+                 * system exclusive event.
                  * @var uint8_t
                  */
                 std::vector<uint8_t> data;

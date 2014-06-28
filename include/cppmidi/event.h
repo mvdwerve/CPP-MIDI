@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <cppmidi/endian.h>
+#include <cppmidi/vlvalue.h>
 
 /**
  * Setting up the basic namespace.
@@ -24,7 +25,7 @@ namespace Midi {
             /**
              * Default constructor.
              */
-            Event() : deltaTime(0), _length(1) {}
+            Event() : deltaTime(0) {}
 
             /**
              * Destructor
@@ -47,7 +48,7 @@ namespace Midi {
              * @param t      The event.
              */
             friend std::ostream& operator <<(std::ostream& output, const Event& t) {
-                Endian::writeByte(output, t.deltaTime);
+                output << t.deltaTime;
                 return t.print(output);
             }
 
@@ -55,21 +56,20 @@ namespace Midi {
              * Method to return the length of this event, which can be very large.
              * @return uint32_t
              */
-            virtual uint32_t getLength() { return _length; }
+            virtual uint32_t getLength() { return deltaTime.getLength(); }
 
             /**
              * Time difference since last event. Since this can be anything, the trivial accessor is
              * omitted.
-             * @todo I have found out this should be a variable length value, will fix later. FIXME
-             * @var uint8_t
+             * @var VLValue
              */
-            uint8_t deltaTime;
+            VLValue deltaTime;
 
         protected:
             /**
-             * Length of this event. Since the SysEx event can be limitless (up to an int) in data because
-             * the midi file specification gives no limit, it has to be a 32 bit number to prevent any
-             * overflows.
+             * Length of this event (bytes). Since the SysEx event can be limitless (up to an int)
+             * in data because the midi file specification gives no limit, it has to be a 32 bit
+             * number to prevent any overflows.
              * @var uint32_t
              */
             uint32_t _length;
