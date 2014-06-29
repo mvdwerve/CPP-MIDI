@@ -28,7 +28,7 @@ using Midi::Events::MessageType;
 int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[]) {
     /* Loading the basic midi object with a filename of test.mid */
     File midi("test.mid");
-    Track *t = new Track();
+    Track *t = midi.getTrack();
 
     uint8_t baseNote = 48;
 
@@ -38,7 +38,6 @@ int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[
     /* The off event will fire 64 ticks after the note event. */
     note.deltaTime = 0;
     off.deltaTime = 0x80;
-
 
     /* Creating 16 messages to put in the midi. */
     for (int i = 0; i < 16; i++) {
@@ -53,6 +52,5 @@ int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[
         baseNote++;
     }
 
-    midi.addTrack(t);
     midi.writeToFile();
 }

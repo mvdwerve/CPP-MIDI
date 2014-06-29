@@ -26,7 +26,7 @@ namespace Midi {
             /**
              * Default constructor
              */
-            File();
+            File() : _tracks() { }
 
             /**
              * Constructor
@@ -39,13 +39,17 @@ namespace Midi {
              */
             virtual ~File();
 
+            /**
+             * Method to get an arbitrary track from the file. Might return NULL.
+             * @return Track* Pointer to a Track from the file. NULL if there was no new track.
+             */
+            Track* getTrack();
 
             /**
-             * Function to add a Midi::Track to this midi file by reference.
-             * @param  t     Track to be added by reference.
-             * @return bool  True if track was added, false otherwise (too much tracks).
+             * Method to get an arbitrary track from the file. Might return NULL, if index is too large.
+             * @return Track* Pointer to a Track from the file. NULL if there was no new track.
              */
-            bool addTrack(Track* t);
+            Track* getTrack(int index);
 
             /**
              * Function to write this Midi::File to the actual internal file object.
@@ -73,11 +77,10 @@ namespace Midi {
             std::fstream _file;
 
             /**
-             * Internally a vector is used to keep reference of all the tracks. Please
-             * note that this will append the track by reference
-             * @var std::vector<Track*>
+             * Since there is always a maximum of 16 tracks, create a primitive array.
+             * @var *Track[]
              */
-            std::vector<Track*> _tracks;
+            Track *_tracks[16];
 
             /**
              * This will keep track of the header data.
