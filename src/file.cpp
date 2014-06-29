@@ -39,6 +39,10 @@ namespace Midi {
      * @return Track* Pointer to a Track from the file. NULL if there was no new track.
      */
     Track* File::getTrack() {
+        /* If we can set the header, we can be sure there is an available track somewhere. */
+        if (!_head.setNumTracks(_head.getNumTracks() + 1))
+            return NULL;
+
         for (int i = 0; i < 16; i++) {
 
             /* If an empty spot was found, create a new track at that spot and
@@ -48,6 +52,7 @@ namespace Midi {
                 return (_tracks[i] = new Track());
         }
 
+        /* Fallback, for whatever case there might be no track available. */
         return NULL;
     }
 
@@ -61,8 +66,10 @@ namespace Midi {
             return NULL;
 
         /* Create a new track if it does not already exist. */
-        if (_tracks[index] == NULL)
+        if (_tracks[index] == NULL) {
             _tracks[index] = new Track();
+            _head.setNumTracks(_head.getNumTracks() + 1);
+        }
 
         return _tracks[index];
     }
