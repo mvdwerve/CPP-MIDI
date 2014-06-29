@@ -60,49 +60,32 @@ using Midi::Events::Message;
 using Midi::Events::MessageType;
 
 int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[]) {
-    /* This is here because we have to clean up. */
-    std::vector<Event*> events;
-
     /* Loading the basic midi object with a filename of test.mid */
     File midi("test.mid");
-    Track *t = new Track();
+    Track *t = midi.getTrack();
 
-    Message *note, *off;
     uint8_t baseNote = 48;
+
+    Message note(MessageType::NOTE_ON, 0, baseNote, 100);
+    Message off(MessageType::NOTE_OFF, 0, baseNote, 0);
+
+    /* The off event will fire 64 ticks after the note event. */
+    note.deltaTime = 0;
+    off.deltaTime = 0x80;
 
     /* Creating 16 messages to put in the midi. */
     for (int i = 0; i < 16; i++) {
-        /* Creating the on and the off message */
-        note = new Message(MessageType::NOTE_ON, 0, baseNote, 100);
-        off = new Message(MessageType::NOTE_OFF, 0, baseNote, 0);
-
-        /* The off event will fire 64 ticks after the note event. */
-        note->deltaTime = 0;
-        off->deltaTime = 64;
+        note.setData1(baseNote);
+        off.setData1(baseNote);
 
         /* Add the events to the track. */
         t->addEvent(note);
         t->addEvent(off);
 
-        /* Notes can be reused, but note that since these are pointers, any change to the
-         * note will change all reuses of the same note.
-         */
-        t->addEvent(note);
-        t->addEvent(off);
-
-        /* Adding the notes to a vector so we can clean everything up later. */
-        events.push_back(note);
-        events.push_back(off);
-
         /* Incrementing the base note. */
         baseNote++;
     }
 
-    midi.addTrack(t);
     midi.writeToFile();
-
-    /* Cleaning up all the notes, since we should not expect the library to do that. */
-    for (auto event : events)
-        delete event;
 }
 ```
