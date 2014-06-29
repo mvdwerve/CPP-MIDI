@@ -52,6 +52,12 @@ namespace Midi {
                 Message(MessageType m, uint8_t channel, uint8_t data1, uint8_t data2);
 
                 /**
+                 * Copy constructor.
+                 * @param m The message to be copied.
+                 */
+                //Message(const Message& m);
+
+                /**
                  * Destructor
                  */
                 virtual ~Message() {}
@@ -64,16 +70,38 @@ namespace Midi {
                 virtual std::ostream& print(std::ostream& output) const;
 
                 /**
+                 * Method to clone the event, should be implemented by derived classes.
+                 * @returns Event* the cloned event pointer, which is dynamically allocated.
+                 */
+                virtual Event* clone() const {
+                    /* The data is only primitive, so the normal copy constructor will suffice. */
+                    return new Message(*this);
+                }
+
+                /**
                  * Method to get the type byte from the current message.
                  * @return uint8_t The type as 8 bits, but maximum value of 4 bits.
                  */
-                uint8_t getType() { return _type; }
+                uint8_t getType() const { return _type; }
 
                 /**
                  * Method to get the channel byte from the current message.
                  * @return uint8_t The type as 8 bits, but maximum value of 4 bits.
                  */
-                uint8_t getChannel() { return _channel; }
+                uint8_t getChannel() const { return _channel; }
+
+                /**
+                 * Method to get the length of this message in bytes. This will depend on the type
+                 * of this message, since some messages ignore the 4th byte.
+                 * @return uint32_t The length in bytes.
+                 */
+                virtual uint32_t getLength() const {
+                    if (_type == MessageType::PROGRAM_CHANGE
+                            || _type == MessageType::CHANNEL_AFTERTOUCH)
+                        return 2 + Event::getLength();
+                    else
+                        return 3 + Event::getLength();
+                }
 
                 /**
                  * Method to set the type byte for the current message. This could alter the length if
@@ -82,19 +110,6 @@ namespace Midi {
                  * @param t Type as a MessageType.
                  */
                 void setType(MessageType t) { _type = t; }
-
-                /**
-                 * Method to get the length of this message in bytes. This will depend on the type
-                 * of this message, since some messages ignore the 4th byte.
-                 * @return uint32_t The length in bytes.
-                 */
-                virtual uint32_t getLength() {
-                    if (_type == MessageType::PROGRAM_CHANGE
-                            || _type == MessageType::CHANNEL_AFTERTOUCH)
-                        return 2 + Event::getLength();
-                    else
-                        return 3 + Event::getLength();
-                }
 
                 /**
                  * Method to set the note from this message. The channel number cannot exceed 16 so

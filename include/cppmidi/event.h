@@ -42,6 +42,12 @@ namespace Midi {
             virtual std::ostream& print(std::ostream& output) const = 0;
 
             /**
+             * Method to clone the event, should be implemented by derived classes.
+             * @returns Event* the cloned event pointer, which is dynamically allocated.
+             */
+            virtual Event* clone() const = 0;
+
+            /**
              * Friend function to efficiently print any and all event to an output stream, since
              * the derived classes will have implemented the print method.
              * @param output The output stream to be written to.
@@ -56,7 +62,7 @@ namespace Midi {
              * Method to return the length of this event, which can be very large.
              * @return uint32_t
              */
-            virtual uint32_t getLength() { return deltaTime.getLength(); }
+            virtual uint32_t getLength() const { return deltaTime.getLength(); }
 
             /**
              * Time difference since last event. Since this can be anything, the trivial accessor is
@@ -64,15 +70,6 @@ namespace Midi {
              * @var VLValue
              */
             VLValue deltaTime;
-
-        protected:
-            /**
-             * Length of this event (bytes). Since the SysEx event can be limitless (up to an int)
-             * in data because the midi file specification gives no limit, it has to be a 32 bit
-             * number to prevent any overflows.
-             * @var uint32_t
-             */
-            uint32_t _length;
     };
 }
 

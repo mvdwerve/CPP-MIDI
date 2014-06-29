@@ -52,7 +52,7 @@ namespace Midi {
              * Method to get the length of this VLValue.
              * @return uint8_t The length it would be when written to a stream.
              */
-            uint8_t getLength() { return _bytes.size(); }
+            uint8_t getLength() const { return _bytes.size(); }
 
             /**
              * Method to set the value of this VLValue.

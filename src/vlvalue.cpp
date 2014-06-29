@@ -22,14 +22,10 @@ namespace Midi {
      * @return std::ostream& The original stream.
      */
     std::ostream& operator <<(std::ostream& output, const VLValue& v) {
-        std::cout << v._value << std::endl;
-
-        for (auto byte : v._bytes) {
-            printf("%.2X ", byte);
+        /* Write all bytes to the ouput stream. */
+        for (auto byte : v._bytes)
             Endian::writeByte(output, byte);
-        }
 
-        std::cout << std::endl << std::endl;
         return output;
     }
 
@@ -38,8 +34,6 @@ namespace Midi {
      * @param value The value to set this VLValue to.
      */
     void VLValue::setValue(uint32_t value) {
-        uint32_t newValue;
-
         /* Setting the value and clearing the vector, because there might be old bytes in it. */
         _value = value;
         _bytes.clear();

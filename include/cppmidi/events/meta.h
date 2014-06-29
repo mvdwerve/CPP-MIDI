@@ -61,11 +61,19 @@ namespace Midi {
                 virtual std::ostream& print(std::ostream& output) const;
 
                 /**
+                 * Method to clone the event, should be implemented by derived classes.
+                 * @returns Event* the cloned event pointer, which is dynamically allocated.
+                 */
+                virtual Event* clone() const {
+                    return new Meta(*this);
+                }
+
+                /**
                  * Method which adds the current data length plus the usual length of
                  * this event.
                  * @return uint32_t The total length in bytes of this sysex event.
                  */
-                virtual uint32_t getLength() { return Event::getLength() + _dataSize.getLength(); }
+                virtual uint32_t getLength() const { return Event::getLength() + _dataSize.getLength(); }
             private:
                 /**
                  * The type of this meta event.

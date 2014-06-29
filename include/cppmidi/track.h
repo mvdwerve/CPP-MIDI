@@ -26,6 +26,14 @@ namespace Midi {
         const static char* IDENTIFIER;
 
         /**
+         * Destructor, frees up all the copied pointers.
+         */
+        virtual ~Track() {
+            for (auto event : _events)
+                delete event;
+        }
+
+        /**
          * Stream operator so the track info can be written to any output.
          * @param output Output stream
          * @param t      Track to be written to the output
@@ -38,9 +46,9 @@ namespace Midi {
          * @param   e   The event to be added.
          * @todo Check the length.
          */
-        bool addEvent(Event* e) {
-            _length += e->getLength();
-            _events.push_back(e);
+        bool addEvent(const Event& e) {
+            _length += e.getLength();
+            _events.push_back(e.clone());
 
             return true;
         }

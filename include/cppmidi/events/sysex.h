@@ -34,12 +34,21 @@ namespace Midi {
                  */
                 virtual std::ostream& print(std::ostream& output) const;
 
+
                 /**
                  * Method which adds the current data length plus the usual length of
                  * this event.
                  * @return uint64_t The total length in bytes of this sysex event.
                  */
-                virtual uint32_t getLength() { return Event::getLength() + 2 + data.size(); }
+                virtual uint32_t getLength() const { return Event::getLength() + 2 + data.size(); }
+
+                /**
+                 * Method to clone the event, should be implemented by derived classes.
+                 * @returns Event* the cloned event pointer, which is dynamically allocated.
+                 */
+                virtual Event* clone() const {
+                    return new SysEx(*this);
+                }
 
                 /**
                  * Variable with the manufacturer id, which could be anything.
