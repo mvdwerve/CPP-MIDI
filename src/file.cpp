@@ -13,28 +13,6 @@
  */
 namespace Midi {
     /**
-     * Constructor
-     * @param name  Name of the file to be opened
-     */
-    File::File(const std::string str) : _tracks() {
-        /* XXX:2014-6-24:mvdwerve: fstream is now used for writing only and truncated on read. */
-        _file.open(str, std::ios::trunc | std::ios::binary | std::ios::out);
-    }
-
-    /**
-     * Destructor
-     */
-    File::~File() {
-        /* Tracks are dynamically allocated by us, and should thus be freed. */
-        for (auto track : _tracks)
-            delete track;
-
-        /* Flush and close the file. */
-        _file.flush();
-        _file.close();
-    }
-
-    /**
      * Method to get an new, empty track from the file. Might return NULL.
      * @return Track* Pointer to a Track from the file. NULL if there was no new track.
      */
@@ -93,4 +71,22 @@ namespace Midi {
         return output;
     }
 
+    /**
+     * Method to input the file into the midi object. The stream should be in binary mode.
+     * @param input The input stream.
+     * @param f The midi file object.
+     * @return std::istream& THe original input stream.
+     */
+    std::istream& operator >>(std::istream& input, File& f) {
+        input >> f._head;
+
+        uint16_t numTracks = f._head.getNumTracks();
+
+        for (int i = 0; i < numTracks; i++) {
+            f._tracks[i] = new Track();
+            //input >> _tracks[i];
+        }
+
+        return input;
+    }
 }

@@ -4,7 +4,7 @@ example
 .*.sw*
 *~
 *.a
-*.mid
+test.mid
 lib/
 build/
 objects/

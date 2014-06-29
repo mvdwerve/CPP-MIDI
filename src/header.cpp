@@ -47,4 +47,15 @@ namespace Midi {
 
         return output;
     }
+
+    /**
+     * Method to read the header object from an input stream. The stream should
+     * be in binary mode.
+     * @param input The input stream.
+     * @param head The header object.
+     * @return std::istream& THe original input stream.
+     */
+    std::istream& operator >>(std::istream& input, Header& head) {
+       return input;
+    }
 }

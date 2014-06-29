@@ -18,6 +18,7 @@
 #include <cppmidi/event.h>
 #include <cppmidi/track.h>
 #include <vector>
+#include <fstream>
 
 using Midi::File;
 using Midi::Track;
@@ -25,9 +26,9 @@ using Midi::Event;
 using Midi::Events::Message;
 using Midi::Events::MessageType;
 
-int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[]) {
+void writeTest() {
     /* Loading the basic midi object with a filename of test.mid */
-    File midi("test.mid");
+    File midi;
     Track *t = midi.getTrack();
 
     uint8_t baseNote = 48;
@@ -52,5 +53,29 @@ int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[
         baseNote++;
     }
 
-    midi.writeToFile();
+    std::ofstream file("test.mid", std::ios::trunc | std::ios::binary);
+
+    file << midi;
+    file.flush();
+    file.close();
+}
+
+void readTest() {
+    File midi;
+
+    std::ifstream oldFile("old.mid", std::ios::binary);
+
+    oldFile >> midi;
+    oldFile.close();
+
+    std::ofstream newFile("new.mid", std::ios::trunc | std::ios::binary);
+
+    newFile << midi;
+    newFile.flush();
+    newFile.close();
+}
+
+int main(__attribute__ ((unused)) int argc, __attribute__ ((unused)) char* argv[]) {
+    readTest();
+    writeTest();
 }

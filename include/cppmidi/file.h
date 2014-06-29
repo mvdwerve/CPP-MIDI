@@ -29,15 +29,13 @@ namespace Midi {
             File() : _tracks() { }
 
             /**
-             * Constructor
-             * @param name  Name of the file to be opened
-             */
-            File(const std::string name);
-
-            /**
              * Destructor
              */
-            virtual ~File();
+            virtual ~File() {
+                /* Tracks are dynamically allocated by us, and should thus be freed. */
+                for (auto track : _tracks)
+                    delete track;
+            }
 
             /**
              * Method to get an arbitrary track from the file. Might return NULL.
@@ -52,15 +50,6 @@ namespace Midi {
             Track* getTrack(int index);
 
             /**
-             * Function to write this Midi::File to the actual internal file object.
-             * @todo truncate the file?
-             */
-            void writeToFile() {
-                _file << *this;
-                _file.flush();
-            }
-
-            /**
              * Friend function to overload the operator to write to streams, used for
              * file writing. This makes it that the midi can be written to virtually
              * everything as long as it is an outputstream.
@@ -69,13 +58,16 @@ namespace Midi {
              * @returns std::ostream    Original stream.
              */
             friend std::ostream& operator <<(std::ostream& output, const File& f);
-        private:
-            /**
-             * The internal filestream to be read from and written to.
-             * @var std::fstream
-             */
-            std::fstream _file;
 
+            /**
+             * Method to input the file into the midi object. The stream should be in binary mode.
+             * @param input The input stream.
+             * @param f The midi file object.
+             * @return std::istream& THe original input stream.
+             */
+            friend std::istream& operator >>(std::istream& input, File& f);
+
+        private:
             /**
              * Since there is always a maximum of 16 tracks, create a primitive array.
              * @var *Track[]
