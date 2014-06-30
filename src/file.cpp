@@ -63,6 +63,7 @@ namespace Midi {
     std::ostream& operator <<(std::ostream& output, const File& f) {
         output << f._head;
 
+        /* If the track was allocated, write the track to the stream. */
         for (auto track : f._tracks) {
             if (track != NULL)
                 output << *track;
@@ -78,6 +79,7 @@ namespace Midi {
      * @return std::istream& THe original input stream.
      */
     std::istream& operator >>(std::istream& input, File& f) {
+        /* Let the header handle the first bytes. */
         input >> f._head;
 
         /* The number of tracks previously read in the header. */

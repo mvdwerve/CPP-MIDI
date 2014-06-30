@@ -79,6 +79,12 @@ namespace Midi {
              * @param value The value to set this VLValue to.
              */
             void setValue(uint32_t value);
+
+            /**
+             * Method to get the value of this VLValue.
+             * @return uint32_t The value of this VLValue object as an integer.
+             */
+            uint32_t getValue() const { return _value; }
         private:
 
             /**

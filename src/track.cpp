@@ -36,28 +36,13 @@ namespace Midi {
      * @return std::ostream& Original output stream.
      */
     std::ostream& operator <<(std::ostream& output, const Track& t) {
-        /* This will be the EOT event. */
-        Meta EOT(MetaType::EOT);
-
-        /* This is a program change message for channel 0 (maybe set all channels?) */
-        Message initialProgram(MessageType::PROGRAM_CHANGE, 0, 1, 0);
-
         /* Writing the track identifier plus the length to the stream. */
         output.write(Track::IDENTIFIER, 4);
-        Endian::writeIntBig(output, t._length /*+ EOT.getLength()*/ + initialProgram.getLength() + 4);
-
-        /* Writing the initial program to channel 0, so there will be sound. */
-        output << initialProgram;
+        Endian::writeIntBig(output, t._length);
 
         /* Writing every event to the output stream */
         for (auto event : t._events)
             output << *event;
-
-        /* XXX:2014-05-27:mvdwerve: This is the EOT until the Meta event is finished. */
-        Endian::writeByte(output, 0x00);
-        Endian::writeByte(output, 0xFF);
-        Endian::writeByte(output, 0x2F);
-        Endian::writeByte(output, 0x00);
 
         return output;
     }
@@ -70,10 +55,11 @@ namespace Midi {
      * @return std::istream& THe original input stream.
      */
     std::istream& operator >>(std::istream& input, Track& track) {
+        /* Reading the first 4 magic bytes from the stream, which should be the MTrk. */
         char *magic = new char[4];
         input.read(magic, 4);
 
-        /* If the magic number MThd does not match, throw an exception. */
+        /* If the magic number MTrk does not match, throw an exception. */
         if (strncmp(magic, Track::IDENTIFIER, 4))
             throw std::ios_base::failure("Bad track magic");
 
@@ -83,7 +69,6 @@ namespace Midi {
         Event* event = NULL;
 
         while (length) {
-            std::cout << std::endl << "Popping Event" << std::endl;
             /* There can really only be 3 cases, so an if-statement is a good choice here, although
              * this does certainly not feel like good form. After this if statement, event is guaranteed
              * to have a message in it. Since most of the cases will be the message, everything should be fine.
@@ -94,6 +79,7 @@ namespace Midi {
                         && !(event = SysEx::popEvent(input)))
                 throw std::ios_base::failure("Cannot create event, unknown status byte.");
 
+            /* Subtracting the read bytes from the length. */
             length -= event->gcount();
 
             /* Adding the event to the track and making sure the local pointer cannot be accessed again. */
@@ -101,6 +87,7 @@ namespace Midi {
             event = NULL;
         }
 
+        /* Was dynamically allocated, so is freed now. */
         delete magic;
 
         return input;

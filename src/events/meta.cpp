@@ -20,7 +20,39 @@ namespace Midi {
          * @return Event* A dynamically allocated event.
          */
         Event* Meta::popEvent(std::istream &input) {
-            return NULL;
+            /* Allocating the new message. */
+            Meta *meta = new Meta();
+
+            /* Popping the VLValue from the stream, which can never go wrong (syntax). */
+            input >> meta->deltaTime;
+
+            /* This should be 0xFF */
+            uint8_t head = Endian::readByte(input);
+
+            /* The header is fixed 0xFF, so if this is a mismatch this is not a Meta Event. */
+            if (head != 0xFF) {
+                /* Simply put the head and the vlv back on the stream. */
+                input.putback(head);
+                meta->deltaTime.putBack(input);
+
+                delete meta;
+                return NULL;
+            }
+
+            /* Reading the type and de vlv datasize from the stream. */
+            meta->_type = Endian::readByte(input);
+            input >> meta->_dataSize;
+
+            uint32_t dataSize = meta->_dataSize.getValue();
+
+            /* Updating the amount of bytes read on this metaevent. */
+            meta->_gcount += dataSize + meta->_dataSize.gcount() + 2;
+
+            /* Putting all the data in the array. Might be in wrong order? */
+            while (dataSize--)
+                meta->_data.push_back(Endian::readByte(input));
+
+            return meta;
         }
 
         /**

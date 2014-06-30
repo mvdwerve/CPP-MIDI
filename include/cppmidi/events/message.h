@@ -52,12 +52,6 @@ namespace Midi {
                 Message(MessageType m, uint8_t channel, uint8_t data1, uint8_t data2);
 
                 /**
-                 * Copy constructor.
-                 * @param m The message to be copied.
-                 */
-                //Message(const Message& m);
-
-                /**
                  * Destructor
                  */
                 virtual ~Message() {}

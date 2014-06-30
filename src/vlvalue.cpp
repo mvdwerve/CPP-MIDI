@@ -36,18 +36,31 @@ namespace Midi {
      * @return std::istream& The original stream.
      */
     std::istream& operator >>(std::istream& input, VLValue& v) {
+        /* Initialize the values. */
         uint8_t byte = 0x00;
         uint32_t value = 0;
+        uint8_t count = 1;
 
+        /* If the read bytes have value on an & with 0x80 it means their highest
+         * bit is set. This means there is more to come and the next value will also
+         * belong to the VLValue, until this evaluates to false.
+         */
         while ((byte = Endian::readByte(input)) & 0x80) {
             value |= (byte & 0x7F);
             value <<= 7;
+            count++;
         }
 
+        /* This will add the last byte too, since the value has its lowest 7 bits already
+         * empty and the rest shifted.
+         */
         value |= byte;
 
+        /* Updating the amount of bytes popped. */
+        v._gcount = count;
+
+        /* Setting the value with the setValue function, which will handle the rest. */
         v.setValue(value);
-        std::cout << "VLValue: " << value << std::endl;
 
         return input;
     }
@@ -56,8 +69,18 @@ namespace Midi {
      * Function to put this object BACK on a given input stream.
      * @param input The input stream.
      */
-    void putBack(std::istream& input) {
+    void VLValue::putBack(std::istream& input) {
+        /* Reversing the stream so we can put everything back in order. */
+        std::reverse(_bytes.begin(), _bytes.end());
 
+        /* Putting all the bytes back. */
+        for (auto byte : _bytes)
+            input.putback(byte);
+
+        /* Resetting the object. You can't have your cake and eat it too. */
+        _gcount = 0;
+        _value = 0;
+        _bytes.clear();
     }
 
     /**

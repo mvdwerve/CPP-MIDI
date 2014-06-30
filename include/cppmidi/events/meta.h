@@ -46,7 +46,7 @@ namespace Midi {
                  * is a fixed header for this event (0xFF).
                  * @param t The type of metaevent to create.
                  */
-                Meta(MetaType t) : Event(), _type(t) { }
+                Meta(MetaType t) : Event(), _type(t), _dataSize(0) { }
 
                 /**
                  * Destructor.
@@ -81,8 +81,13 @@ namespace Midi {
                  * this event.
                  * @return uint32_t The total length in bytes of this sysex event.
                  */
-                virtual uint32_t getLength() const { return Event::getLength() + _dataSize.getLength(); }
+                virtual uint32_t getLength() const { return Event::getLength() + 2 + _dataSize.getLength() + _data.size(); }
             private:
+                /**
+                 * Private Meta constructor.
+                 */
+                Meta() : Event(), _dataSize(0) { }
+
                 /**
                  * The type of this meta event.
                  * @var uint8_t

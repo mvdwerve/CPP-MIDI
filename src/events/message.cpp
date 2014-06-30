@@ -47,14 +47,15 @@ namespace Midi {
             /* Popping the VLValue from the stream, which can never go wrong (syntax). */
             input >> msg->deltaTime;
 
+            /* Reading the status and getting the type from the status. */
             uint8_t status = Endian::readByte(input);
             uint8_t type = status >> 4;
 
-            ++(msg->_gcount);
-
             /* If we can successfully pass this if statement, we're safe. */
             if (type < MessageType::NOTE_OFF || type > MessageType::PITCH_BEND) {
-                /* TODO:: RESTORE THE STREAM */
+                std::cout << "Well, this is not a message event!" << std::endl;
+                input.putback(status);
+                msg->deltaTime.putBack(input);
 
                 delete msg;
                 return NULL;
@@ -65,7 +66,8 @@ namespace Midi {
             msg->_channel = status & 0xF;
             msg->_data1 = Endian::readByte(input);
 
-            ++(msg->_gcount);
+            /* Updating the read characters. */
+            msg->_gcount += 2;
 
             /* If this isn't a program change or channel aftertouch, read one more byte of data. */
             if (type != MessageType::PROGRAM_CHANGE && type != MessageType::CHANNEL_AFTERTOUCH) {
@@ -82,6 +84,7 @@ namespace Midi {
          * @return std::ostream& The original output stream.
          */
         std::ostream& Message::print(std::ostream& output) const {
+            /* The first byte has the type in the upper nibble and the channel in the lower. */
             Endian::writeByte(output, _type << 4 | _channel);
             Endian::writeByte(output, _data1);
 
