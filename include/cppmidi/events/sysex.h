@@ -51,6 +51,15 @@ namespace Midi {
                 }
 
                 /**
+                 * Method which tries to pop a SysEx object from the input stream.
+                 * Returns NULL if it cannot be popped, otherwise it will return a dynamically allocated
+                 * Event*. If NULL is returned, the guarantee is made that the stream is not modified.* @param input The input stream.
+                 * @param input The input stream.
+                 * @return Event* A dynamically allocated event.
+                 */
+                static Event* popEvent(std::istream &input);
+
+                /**
                  * Variable with the manufacturer id, which could be anything.
                  * @var uint8_t
                  */

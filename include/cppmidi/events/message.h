@@ -79,6 +79,15 @@ namespace Midi {
                 }
 
                 /**
+                 * Method which tries to pop a Message from the input stream.
+                 * Returns NULL if it cannot be popped, otherwise it will return a dynamically allocated
+                 * Event*. If NULL is returned, the guarantee is made that the stream is not modified.
+                 * @param input The input stream.
+                 * @return Event* A dynamically allocated event.
+                 */
+                static Event* popEvent(std::istream &input);
+
+                /**
                  * Method to get the type byte from the current message.
                  * @return uint8_t The type as 8 bits, but maximum value of 4 bits.
                  */

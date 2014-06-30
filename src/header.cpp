@@ -62,7 +62,7 @@ namespace Midi {
 
         /* If the magic number MThd does not match, throw an exception. */
         if (strncmp(magic, Header::IDENTIFIER, 4))
-            throw std::ios_base::failure("Bad header magic number");
+            throw std::ios_base::failure("Bad header magic");
 
         /* We don't store this since this is constant. */
         Endian::readIntBig(input);
@@ -71,6 +71,9 @@ namespace Midi {
         head._fileFormat = Endian::readShortBig(input);
         head._numTracks = Endian::readShortBig(input);
         head._deltaTicks = Endian::readShortBig(input);
+
+        /* Was dynamically allocated, so free now. */
+        delete magic;
 
         return input;
     }

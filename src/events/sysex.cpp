@@ -15,6 +15,15 @@
 namespace Midi {
     namespace Events {
         /**
+         * Method which tries to pop a SysEx object from the input stream.
+         * @param input The input stream.
+         * @return Event* A dynamically allocated event.
+         */
+        Event* SysEx::popEvent(std::istream &input) {
+            return NULL;
+        }
+
+        /**
          * Function which prints this event.
          * @param output The output stream to print to.
          * @return std::ostream& The original output stream.

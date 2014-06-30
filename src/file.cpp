@@ -80,11 +80,14 @@ namespace Midi {
     std::istream& operator >>(std::istream& input, File& f) {
         input >> f._head;
 
+        /* The number of tracks previously read in the header. */
         uint16_t numTracks = f._head.getNumTracks();
 
+        /* Only read as much tracks as the header says. */
         for (int i = 0; i < numTracks; i++) {
+            /* Dynamically allocate the track and use the stream operator to put it in the track. */
             f._tracks[i] = new Track();
-            //input >> _tracks[i];
+            input >> *(f._tracks[i]);
         }
 
         return input;

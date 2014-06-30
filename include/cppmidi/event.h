@@ -25,7 +25,7 @@ namespace Midi {
             /**
              * Default constructor.
              */
-            Event() : deltaTime(0) {}
+            Event() : deltaTime(0), _gcount(0) {}
 
             /**
              * Destructor
@@ -46,6 +46,10 @@ namespace Midi {
              * @returns Event* the cloned event pointer, which is dynamically allocated.
              */
             virtual Event* clone() const = 0;
+
+            virtual uint32_t gcount() const {
+                return _gcount;
+            }
 
             /**
              * Friend function to efficiently print any and all event to an output stream, since
@@ -70,6 +74,12 @@ namespace Midi {
              * @var VLValue
              */
             VLValue deltaTime;
+        protected:
+            /**
+             * The variable which will hold the amount of last popped characters from an input stream.
+             * @var uint32_t
+             */
+            uint32_t _gcount;
     };
 }
 

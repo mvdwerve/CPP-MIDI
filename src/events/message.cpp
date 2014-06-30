@@ -36,6 +36,15 @@ namespace Midi {
         }
 
         /**
+         * Method which tries to pop a Message from the input stream.
+         * @param input The input stream.
+         * @return Event* A dynamically allocated event.
+         */
+        Event* Message::popEvent(std::istream &input) {
+            return NULL;
+        }
+
+        /**
          * Function which prints this event.
          * @param output The output stream to print to.
          * @return std::ostream& The original output stream.
