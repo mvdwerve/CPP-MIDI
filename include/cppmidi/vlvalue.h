@@ -28,12 +28,12 @@ namespace Midi {
             /**
              * Default constructor.
              */
-            VLValue() { setValue(0); }
+            VLValue() : _gcount(0) { setValue(0); }
 
             /**
              * Default constructor.
              */
-            VLValue(uint32_t number) { setValue(number); }
+            VLValue(uint32_t number) : _gcount(0) { setValue(number); }
 
             /**
              * Destructor
@@ -49,6 +49,26 @@ namespace Midi {
             friend std::ostream& operator <<(std::ostream& output, const VLValue& v);
 
             /**
+             * Friend function to read data from an input stream into a VLValue.
+             * @param input The input stream.
+             * @param v The VLValue object.
+             * @return std::istream& The original stream.
+             */
+            friend std::istream& operator >>(std::istream& input, VLValue& v);
+
+            /**
+             * Function to put this object BACK on a given input stream.
+             * @param input The input stream.
+             */
+            void putBack(std::istream& input);
+
+            /**
+             * Function to get the last amount of bytes popped from an input stream.
+             * @return uint8_t The amount of bytes popped from input stream.
+             */
+            uint8_t gcount() const { return _gcount; }
+
+            /**
              * Method to get the length of this VLValue.
              * @return uint8_t The length it would be when written to a stream.
              */
@@ -60,6 +80,12 @@ namespace Midi {
              */
             void setValue(uint32_t value);
         private:
+
+            /**
+             * Amount of bytes popped from input stream.
+             */
+            uint8_t _gcount;
+
             /**
              * The actual value of the variable to be written. It is assumed this will never be larger than
              * 32 bits, but if it would be, using a larger datatype would not be a problem.

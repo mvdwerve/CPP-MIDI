@@ -47,9 +47,11 @@ namespace Midi {
              */
             virtual Event* clone() const = 0;
 
-            virtual uint32_t gcount() const {
-                return _gcount;
-            }
+            /**
+             * Method to get the amount of bytes this object has popped from a stream first.
+             * @return uint32_t The amount in bytes.
+             */
+            virtual uint32_t gcount() const { return _gcount + deltaTime.gcount(); }
 
             /**
              * Friend function to efficiently print any and all event to an output stream, since

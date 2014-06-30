@@ -30,6 +30,37 @@ namespace Midi {
     }
 
     /**
+     * Friend function to read data from an input stream into a VLValue.
+     * @param input The input stream.
+     * @param v The VLValue object.
+     * @return std::istream& The original stream.
+     */
+    std::istream& operator >>(std::istream& input, VLValue& v) {
+        uint8_t byte = 0x00;
+        uint32_t value = 0;
+
+        while ((byte = Endian::readByte(input)) & 0x80) {
+            value |= (byte & 0x7F);
+            value <<= 7;
+        }
+
+        value |= byte;
+
+        v.setValue(value);
+        std::cout << "VLValue: " << value << std::endl;
+
+        return input;
+    }
+
+    /**
+     * Function to put this object BACK on a given input stream.
+     * @param input The input stream.
+     */
+    void putBack(std::istream& input) {
+
+    }
+
+    /**
      * Method to set the value of this VLValue.
      * @param value The value to set this VLValue to.
      */

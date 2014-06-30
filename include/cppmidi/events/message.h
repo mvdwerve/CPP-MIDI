@@ -142,6 +142,11 @@ namespace Midi {
                 void setData2(uint8_t data) { _data2 = (data < 128) ? data : 127; }
             private:
                 /**
+                 * Private constructor, which does simply nothing.
+                 */
+                Message() : Event() {}
+
+                /**
                  * Current type byte, with the high nibble set to the status. Ranges from 0x8 to 0xE.
                  * @var uint8_t
                  */

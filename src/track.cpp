@@ -83,6 +83,7 @@ namespace Midi {
         Event* event = NULL;
 
         while (length) {
+            std::cout << std::endl << "Popping Event" << std::endl;
             /* There can really only be 3 cases, so an if-statement is a good choice here, although
              * this does certainly not feel like good form. After this if statement, event is guaranteed
              * to have a message in it. Since most of the cases will be the message, everything should be fine.

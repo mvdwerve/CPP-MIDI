@@ -41,7 +41,39 @@ namespace Midi {
          * @return Event* A dynamically allocated event.
          */
         Event* Message::popEvent(std::istream &input) {
-            return NULL;
+            /* Allocating the new message. */
+            Message *msg = new Message();
+
+            /* Popping the VLValue from the stream, which can never go wrong (syntax). */
+            input >> msg->deltaTime;
+
+            uint8_t status = Endian::readByte(input);
+            uint8_t type = status >> 4;
+
+            ++(msg->_gcount);
+
+            /* If we can successfully pass this if statement, we're safe. */
+            if (type < MessageType::NOTE_OFF || type > MessageType::PITCH_BEND) {
+                /* TODO:: RESTORE THE STREAM */
+
+                delete msg;
+                return NULL;
+            }
+
+            /* Setting up the object and setting the data */
+            msg->_type = type;
+            msg->_channel = status & 0xF;
+            msg->_data1 = Endian::readByte(input);
+
+            ++(msg->_gcount);
+
+            /* If this isn't a program change or channel aftertouch, read one more byte of data. */
+            if (type != MessageType::PROGRAM_CHANGE && type != MessageType::CHANNEL_AFTERTOUCH) {
+                msg->_data2 = Endian::readByte(input);
+                ++(msg->_gcount);
+            }
+
+            return msg;
         }
 
         /**
