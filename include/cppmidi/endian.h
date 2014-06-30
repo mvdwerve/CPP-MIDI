@@ -97,6 +97,64 @@ namespace Midi {
             inline static void writeByte(std::ostream &stream, uint8_t a) {
                 stream << (char) a;
             }
+
+
+            /**
+             * Helper function for reading a cross platform big endian int.
+             * @param input  The stream to be read from.
+             */
+            inline static uint32_t readIntBig(std::istream &input) {
+                char *bytes = new char[4];
+                input.read(bytes, 4);
+
+                uint32_t tmp = *(reinterpret_cast<uint32_t*>(bytes));
+                delete bytes;
+
+                return (Endian::modeBigEndian) ? tmp : SWAP_INT(tmp);
+            }
+
+            /**
+             * Helper function for reading a cross platform little endian int.
+             * @param input  The stream to be read from.
+             */
+            inline static uint32_t readIntLittle(std::istream &input) {
+                return SWAP_INT(readIntBig(input));
+            }
+
+            /**
+             * Helper function for reading a cross platform big endian short.
+             * @param input  The stream to be read from.
+             */
+            inline static uint16_t readShortBig(std::istream &input) {
+                char *bytes = new char[2];
+                input.read(bytes, 2);
+
+                uint16_t tmp = *(reinterpret_cast<uint16_t*>(bytes));
+                delete bytes;
+
+                return (Endian::modeBigEndian) ? tmp : SWAP_SHORT(tmp);
+            }
+
+
+            /**
+             * Helper function for reading a cross platform little endian int.
+             * @param input  The stream to be read from.
+             */
+            inline static uint16_t readShortLittle(std::istream &input) {
+                return SWAP_SHORT(readShortBig(input));
+            }
+
+            /**
+             * Helper function for reading a cross platform byte.
+             * @param input    The stream to be read from.
+             * @todo Maybe remove, because might be superfluous.
+             */
+            inline static uint8_t readByte(std::istream &input) {
+                char byte;
+                input.read(&byte, 1);
+
+                return byte;
+            }
     };
 }
 

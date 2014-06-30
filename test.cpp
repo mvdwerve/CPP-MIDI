@@ -65,7 +65,12 @@ void readTest() {
 
     std::ifstream oldFile("old.mid", std::ios::binary);
 
-    oldFile >> midi;
+    try {
+        oldFile >> midi;
+    } catch (std::ios_base::failure &f) {
+        std::cout << "Something went wrong... " << f.what() << std::endl;
+    }
+
     oldFile.close();
 
     std::ofstream newFile("new.mid", std::ios::trunc | std::ios::binary);

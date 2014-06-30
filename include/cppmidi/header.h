@@ -44,9 +44,9 @@ namespace Midi {
 
             /**
              * Method to get the currently used fileformat in the MidiMode style.
-             * @return MidiMode  The currently used MidiMode.
+             * @return uint16_t  The currently used MidiMode.
              */
-            MidiMode getFileFormat() { return _fileFormat; }
+            uint16_t getFileFormat() { return _fileFormat; }
 
             /**
              * Method to get the number of tracks. Is always 2 bytes but has a
@@ -102,9 +102,9 @@ namespace Midi {
         private:
             /**
              * The currently used fileformat.
-             * @var MidiMode
+             * @var uint16_t
              */
-            MidiMode _fileFormat;
+            uint16_t _fileFormat;
 
             /**
              * The current amount of tracks in the midi file.

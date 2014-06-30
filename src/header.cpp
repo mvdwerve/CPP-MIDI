@@ -7,6 +7,7 @@
  */
 
 #include <string>
+#include <cstring>
 #include <arpa/inet.h>
 #include <cppmidi/header.h>
 #include <cppmidi/endian.h>
@@ -56,6 +57,21 @@ namespace Midi {
      * @return std::istream& THe original input stream.
      */
     std::istream& operator >>(std::istream& input, Header& head) {
-       return input;
+        char *magic = new char[4];
+        input.read(magic, 4);
+
+        /* If the magic number MThd does not match, throw an exception. */
+        if (strncmp(magic, Header::IDENTIFIER, 4))
+            throw std::ios_base::failure("Bad header magic number");
+
+        /* We don't store this since this is constant. */
+        Endian::readIntBig(input);
+
+        /* Store all the header info in the header object for processing of the tracks. */
+        head._fileFormat = Endian::readShortBig(input);
+        head._numTracks = Endian::readShortBig(input);
+        head._deltaTicks = Endian::readShortBig(input);
+
+        return input;
     }
 }
